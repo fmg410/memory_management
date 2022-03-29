@@ -4,10 +4,16 @@
 
 using ShoppingList = std::shared_ptr<std::FILE>;
 
+void close_file(std::FILE* f)
+{
+    std::fclose(f);
+}
+
 ShoppingList makeFile(const char* filename, const char* flags)
 {
-    /*Edit here*/
-    return std::shared_ptr<std::FILE>();
+    ShoppingList file(std::fopen(filename, flags), close_file);
+
+    return file;
 }
 
 class Partner
@@ -15,7 +21,7 @@ class Partner
 public:
     void addToFile(std::string element)
     {
-        /*Edit here*/
+        std::fprintf(shoppingList.get(), "%s\n", element.c_str());
     }
     ShoppingList shoppingList;
 };
