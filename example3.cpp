@@ -10,6 +10,18 @@ void validateArguments(int argc)
     }
 }
 
+class d_error : virtual public std::logic_error {
+protected:
+    std::string error_message;
+public:
+    d_error(const std::string& message)
+    : std::logic_error(message)
+    , error_message(message) {}
+    virtual const char* what() const throw() {
+        return error_message.c_str();
+    }
+};
+
 class Resource
 {
 public:
@@ -18,7 +30,7 @@ public:
         std::cout << "Using resource. Passed " << *arg << std::endl;
         if (*arg == 'd')
         {
-            throw std::logic_error("Passed d. d is prohibited.");
+            throw d_error("Passed d. d is prohibited.");
         }
     }
 };
@@ -36,7 +48,7 @@ int main(int argc, char* argv[])
         rsc->use(argument);
         delete rsc;
     }
-    catch (std::logic_error& e)
+    catch (d_error& e)
     {
         std::cout << e.what() << std::endl;
     }
