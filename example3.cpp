@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdexcept>
+#include <memory>
 
 void validateArguments(int argc)
 {
@@ -40,13 +41,11 @@ int main(int argc, char* argv[])
     validateArguments(argc);
 
     const char* argument = argv[1];
-    Resource* rsc = nullptr;
+    std::unique_ptr<Resource> rsc = std::make_unique<Resource>();
 
     try
     {
-        rsc = new Resource();
         rsc->use(argument);
-        delete rsc;
     }
     catch (d_error& e)
     {
